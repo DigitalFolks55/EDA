@@ -24,6 +24,7 @@ def run():
         df = pd.read_csv(uploaded_file)
         st.session_state.df_name = uploaded_file.name
         st.session_state.df = df
+        st.rerun()
 
 if __name__ == "__main__":
     run()
