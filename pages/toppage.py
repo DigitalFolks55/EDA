@@ -49,7 +49,7 @@ hist = {
         ],
     "Description": 
         [
-        "Crated an application; Profile dataset"
+        "Crated an application; Added a page of Profile Data"
         ],
 }
 
