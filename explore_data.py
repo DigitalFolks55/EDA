@@ -1,0 +1,98 @@
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
+import streamlit as st
+
+from modules.utils import corr_plot, count_plot, dfprofiler, dist_plot, pair_plot, scatter_plot
+
+
+visuals = [
+    "Distribution",
+    "Count",
+    "Scatter",
+    "Pair",
+    "corr_plot"
+]
+
+
+# Description of app.
+st.title("Explore Data")
+
+with st.expander("Concepts"):
+    st.text(
+        """
+        The main purpose of exploring data is that to understand what your dataset in details.
+        This tool helps beginners to efficiently visualize and analyze data, such as:
+        1) Identify patterns & trends: i.e. recurring behaviors seasonal spike.
+        2) Relationships between variables: i.e. correlation.
+        3) Hidden insight: i.e. leading to new opportunities and strategic improvements.
+        4) Anomalies & Outlier detection: i.e. incorrect inputs
+        5) Visualization
+        
+        Data profiling on this tool.
+        1) Distribution plot (Categorical, Numerical data)
+        2) Pie/Count plot (Categorical data)
+        3) Scatter plot (Numerical data)
+        4) Pair plot (Numerical data)
+        5) Correlation plot (Numerical)
+
+        * To be updated:
+        More visularization & Time Series, Geospatial data
+        """
+    )
+
+# target, cat/num
+if "df" in st.session_state:
+    df = st.session_state.df
+    cols = list(df.columns)
+    cols.insert(0, None)
+    cols.append("All")
+
+    visual = st.selectbox("Select a visulazation", visuals)
+
+    if visual == "Distribution":
+        column = st.selectbox("Select a column", cols)
+        if column is not None:
+            dist_plot(df, column)
+    elif visual == "Count":
+        column = st.selectbox("Select a column", cols)
+        hue = st.selectbox("Select a grouping column", cols)
+        if column is not None:
+            count_plot(df, column, hue)
+    elif visual == "Scatter":
+        x_col = st.selectbox("Select a 1st column", cols)
+        y_col = st.selectbox("Select a 2nd column", cols)
+        hue = st.selectbox("Select grouping column", cols)
+        if x_col == "All" or y_col == "All" or hue == "All":
+            st.text(
+                """
+                All is not accepted for any column.
+                Choose one of columns from dataset.
+                """
+            )
+        elif x_col is not None and y_col is not None:
+            scatter_plot(df, x_col, y_col, hue)
+        else:
+            st.text("We need 2 columns. Please select 1st and 2nd columns")
+    elif visual == "Pair":
+        hue = st.selectbox("Select a grouping column", cols)
+        if hue == "All":
+            st.text(
+                """
+                All is not accepted for a grouping column.
+                Choose one of columns from dataset.
+                """
+            )
+        else:
+            pair_plot(df, hue)
+    elif visual == "corr_plot":
+        threshold = st.slider("Select a threshold", 0.0, 1.0, 0.5, 0.1)
+        corr_plot(df, threshold)
+    else:
+        st.text("Not implemented yet")
+    
+    dfprofiler(df)
+    
+
+else:
+    st.text("Upload a file on the side bar")

@@ -4,11 +4,11 @@ import streamlit as st
 
 
 navigation_pages = [
-    st.Page("pages/toppage.py", title="Home"),
-    st.Page("pages/profile.py", title="Profile Data"),
-    st.Page("pages/explore_data.py", title="Explore Data"),
-    st.Page("pages/outliers.py", title="Explore Outliers"),
-    st.Page("pages/hypothesis.py", title="Test Hypothesis")
+    st.Page("toppage.py", title="Home"),
+    st.Page("profile.py", title="Profile Data"),
+    st.Page("explore_data.py", title="Explore Data"),
+    st.Page("outliers.py", title="Explore Outliers"),
+    st.Page("hypothesis.py", title="Test Hypothesis")
 ]
 
 def run():
