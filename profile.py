@@ -1,11 +1,9 @@
 import streamlit as st
 import pandas as pd
 
-from pages.utils import dfprofiler
-
 
 # Description of app.
-st.title("Profile Dataset")
+st.title("Profile Data")
 
 with st.expander("Concepts"):
     st.text(
@@ -29,20 +27,25 @@ with st.expander("Concepts"):
 if "df" in st.session_state:
     df = st.session_state.df
     st.subheader("Dataset samples")
-    st.dataframe(df.head())
+    st.write(df.head())
 
-    st.subheader("Datatype and Statistical values of the data")
-    profiled_df = df.describe(include="all").loc[["count", "unique", "top", "freq", "mean", "std", "min", "max"]]
-    profiled_df.loc["null (%)"] = df.isnull().sum()/len(df)*100
-    profiled_df.loc["Datatype"] = df.dtypes    
-    st.dataframe(profiled_df)
+    st.subheader("Statistical values of the data")
+    st.text("Numerical data")
+    profiled_df_num = df.describe(include="number").loc[["count", "mean", "std", "min", "max"]]
+    profiled_df_num.loc["null (%)"] = df.isnull().sum()/len(df)*100
+    profiled_df_num.loc["Datatype"] = df.dtypes
+    st.write(profiled_df_num)
+    st.text("Categorical data")
+    profiled_df_cat = df.describe(include=["object", "category"]).loc[["count", "unique", "top", "freq"]]
+    profiled_df_cat.loc["null (%)"] = df.isnull().sum()/len(df)*100
+    profiled_df_cat.loc["Datatype"] = df.dtypes
+    st.write(profiled_df_cat)
     
     st.subheader("Missing values")
-    st.dataframe(df[df.isnull().any(axis=1)])
+    st.write(df[df.isnull().any(axis=1)])
 
     st.subheader("Duplicated values")
-    st.dataframe(df[df.duplicated(keep=False)])
-    
+    st.write(df[df.duplicated(keep=False)])    
 
 else:
     st.text("Upload a file on the side bar")

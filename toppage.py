@@ -9,7 +9,7 @@ st.text(
     It guides users through the general steps of EDA, explaining the core concepts behind each stage.
     The application aims to demystify the EDA process, making it accessible and understandable to those new to data analysis.
     It provides a structured approach to exploring datasets, enabling users to gain initial insights and identify potential patterns, anomalies and relationships within their data before moving on to complex analysis.
-    If you have any further questions/feedbacks or need additional support, please feel free to reach out to the developer, digitalfolk55@gmai.com.
+    If you have any further question/feedback or any bug, please feel free to reach out to the developer, digitalfolk55@gmai.com.
     """
 )
 
@@ -41,15 +41,19 @@ st.text(
 st.subheader("General EDA step provided in this app")
 st.image("images/EDA_steps.001.png", width=800)
 
+st.subheader("Warning! Don't upload any confidential data on this app.")
+
 # Version logs
 st.subheader("Version")
 hist = {
     "Date": [
-        "2025-02-16"
+        "2025-02-16",
+        "2025-02-20"
         ],
     "Description": 
         [
-        "Crated an application; Added a page of Profile Data"
+        "Crated an application; Added a page of Profile Data",
+        "Added a page of Explore Data"
         ],
 }
 
