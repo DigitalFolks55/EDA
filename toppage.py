@@ -46,10 +46,11 @@ st.subheader("Warning! Don't upload any confidential data on this app.")
 # Version logs
 st.subheader("Version")
 hist = {
-    "Date": ["2025-02-16", "2025-02-20"],
+    "Date": ["2025-02-16", "2025-02-20", "2025-02-21"],
     "Description": [
         "Crated an application; Added a page of Profile Data",
         "Added a page of Explore Data",
+        "Added a page of Explore Outliers",
     ],
 }
 
