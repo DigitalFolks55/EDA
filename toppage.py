@@ -1,5 +1,5 @@
-import streamlit as st
 import pandas as pd
+import streamlit as st
 
 # Description of app.
 st.title("Exploratory Data Analysis (EDA)")
@@ -8,7 +8,7 @@ st.text(
     This application is designed as an introductory tool to EDA, specifically for beginners.
     It guides users through the general steps of EDA, explaining the core concepts behind each stage.
     The application aims to demystify the EDA process, making it accessible and understandable to those new to data analysis.
-    It provides a structured approach to exploring datasets, enabling users to gain initial insights and identify potential patterns, anomalies and relationships within their data before moving on to complex analysis.
+    It provides a structured approach to exploring datasets, enabling users to gain initial insights and identify potential patterns, anomalies and relationships within their data before moving on to complex analysis.  # noqa
     If you have any further question/feedback or any bug, please feel free to reach out to the developer, digitalfolk55@gmai.com.
     """
 )
@@ -46,15 +46,12 @@ st.subheader("Warning! Don't upload any confidential data on this app.")
 # Version logs
 st.subheader("Version")
 hist = {
-    "Date": [
-        "2025-02-16",
-        "2025-02-20"
-        ],
-    "Description": 
-        [
+    "Date": ["2025-02-16", "2025-02-20", "2025-02-21"],
+    "Description": [
         "Crated an application; Added a page of Profile Data",
-        "Added a page of Explore Data"
-        ],
+        "Added a page of Explore Data",
+        "Added a page of Explore Outliers",
+    ],
 }
 
 st.table(pd.DataFrame(hist))

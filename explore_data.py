@@ -1,18 +1,9 @@
-import matplotlib.pyplot as plt
-import pandas as pd
-import seaborn as sns
 import streamlit as st
 
-from modules.utils import corr_plot, count_plot, dfprofiler, dist_plot, pair_plot, scatter_plot
+from modules.utils import (corr_plot, count_plot, dfprofiler, dist_plot,
+                           pair_plot, scatter_plot)
 
-
-visuals = [
-    "Distribution",
-    "Count",
-    "Scatter",
-    "Pair",
-    "corr_plot"
-]
+visuals = ["Distribution", "Count", "Scatter", "Pair", "corr_plot"]
 
 
 # Description of app.
@@ -28,7 +19,7 @@ with st.expander("Concepts"):
         3) Hidden insight: i.e. leading to new opportunities and strategic improvements.
         4) Anomalies & Outlier detection: i.e. incorrect inputs
         5) Visualization
-        
+
         Data profiling on this tool.
         1) Distribution plot (Categorical, Numerical data)
         2) Pie/Count plot (Categorical data)
@@ -90,9 +81,8 @@ if "df" in st.session_state:
         corr_plot(df, threshold)
     else:
         st.text("Not implemented yet")
-    
+
     dfprofiler(df)
-    
 
 else:
     st.text("Upload a file on the side bar")
