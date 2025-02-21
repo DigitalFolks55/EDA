@@ -45,11 +45,33 @@ if "df" in st.session_state:
         column = st.selectbox("Select a column", cols)
         if column is not None:
             dist_plot(df, column)
+            with st.expander("Intention & How to fix"):
+                st.text(
+                    """
+                    1) Intention
+                    - Understand the distribution of the data whether it is normal or skewed.
+                    - Check outliers from the box plot.
+                    2) How to fix
+                    - Skewed data: Apply log or Box-Cox transformation or nomarilization, such as z_score.
+                    - Outliers: Remove or impute outliers (Please review it with experts).
+                    """
+                )
     elif visual == "Count":
         column = st.selectbox("Select a column", cols)
         hue = st.selectbox("Select a grouping column", cols)
         if column is not None:
             count_plot(df, column, hue)
+            with st.expander("Intention & How to fix"):
+                st.text(
+                    """
+                    1) Intention
+                    - Check bias of the data.
+                    - Check outliers from the labels.
+                    2) How to fix
+                    - Bias data: Take more data or resampling (over/undersampling).
+                    - Outliers: Remove or impute outliers (Please review it with experts).
+                    """
+                )
     elif visual == "Scatter":
         x_col = st.selectbox("Select a 1st column", cols)
         y_col = st.selectbox("Select a 2nd column", cols)
@@ -63,6 +85,17 @@ if "df" in st.session_state:
             )
         elif x_col is not None and y_col is not None:
             scatter_plot(df, x_col, y_col, hue)
+            with st.expander("Intention & How to fix"):
+                st.text(
+                    """
+                    1) Intention
+                    - This plot is for more insights on your data.
+                    - Review the relationship between 2 columns; quantitative value can be confirmed by correlation heatmap.
+                    - Check the relationship by another column.
+                    2) How to fix
+                    - Outliers: Remove or impute outliers (Please review it with experts).
+                    """
+                )
         else:
             st.text("We need 2 columns. Please select 1st and 2nd columns")
     elif visual == "Pair":
@@ -76,9 +109,30 @@ if "df" in st.session_state:
             )
         else:
             pair_plot(df, hue)
+            with st.expander("Intention & How to fix"):
+                st.text(
+                    """
+                    1) Intention
+                    - This plot is for more insights on your data for whole columns.
+                    - Review the relationship between 2 columns; quantitative value can be confirmed by correlation heatmap.
+                    - Check the relationship by another column.
+                    2) How to fix
+                    - Outliers: Remove or impute outliers (Please review it with experts).
+                    """
+                )
     elif visual == "corr_plot":
         threshold = st.slider("Select a threshold", 0.0, 1.0, 0.5, 0.1)
         corr_plot(df, threshold)
+        with st.expander("Intention & How to fix"):
+            st.text(
+                """
+                1) Intention
+                - This plot is for more insights on your data for whole columns.
+                - Review the relationship among columns with quantitative values.
+                2) How to fix
+                - Correlated columns: Drop one of them as per your needs.
+                """
+            )
     else:
         st.text("Not implemented yet")
 
