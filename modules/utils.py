@@ -123,6 +123,7 @@ def corr_plot(df, threshold) -> None:
 
 def outlier_zscore(df, column, threshold) -> None:
     """Z score method for outlier detection."""
+    input_cols = df.columns
     df["zscore"] = abs(zscore(df[column]))
     df["outlier"] = df["zscore"].apply(
         lambda x: "outlier" if x > threshold else "nonoutlier"
@@ -136,10 +137,12 @@ def outlier_zscore(df, column, threshold) -> None:
 
     st.text("Outliers")
     st.write(df[df["outlier"] == "outlier"])
+    st.session_state.df = df[input_cols]
 
 
 def outlier_iqr(df, column, threshold) -> None:
     """Interquartile range method for outlier detection."""
+    input_cols = df.columns
     q1 = df[column].quantile(0.25)
     q3 = df[column].quantile(0.75)
     iqr_df = iqr(df[column])
@@ -158,10 +161,12 @@ def outlier_iqr(df, column, threshold) -> None:
 
     st.text("Outliers")
     st.write(df[df["outlier"] == "outlier"])
+    st.session_state.df = df[input_cols]
 
 
 def outlier_hampel(df, column, threshold) -> None:
     """Hempler filter method for outlier detection."""
+    input_cols = df.columns
     median = df[column].median()
     mad = median_abs_deviation(df[column])
     lower_bound = median - (threshold * mad)
@@ -179,3 +184,4 @@ def outlier_hampel(df, column, threshold) -> None:
 
     st.text("Outliers")
     st.write(df[df["outlier"] == "outlier"])
+    st.session_state.df = df[input_cols]

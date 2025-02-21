@@ -42,12 +42,44 @@ if "df" in st.session_state:
     profiled_df_cat.loc["null (%)"] = df.isnull().sum() / len(df) * 100
     profiled_df_cat.loc["Datatype"] = df.dtypes
     st.write(profiled_df_cat)
+    with st.expander("Intention & How to fix"):
+        st.text(
+            """
+            1) Intention
+             - Understand datatype of the data
+             - Check statistical values of the data in line with your expectation
+             - Know how many missing values are in the data
+            2) How to fix
+             - Data cleaning: Correct or Remove values which are not in your expectation
+             - Data cleaning: Remove missing or duplicated lines.
+             - Data imputation: Fill missing values with mean, median or mode
+            """
+        )
 
     st.subheader("Missing values")
     st.write(df[df.isnull().any(axis=1)])
+    with st.expander("Intention & How to fix"):
+        st.text(
+            """
+            1) Intention
+             - Check lines which have missing values
+            2) How to fix
+             - Data cleaning: Remove missing or duplicated lines.
+             - Data imputation: Fill missing values with mean, median or mode
+            """
+        )
 
     st.subheader("Duplicated values")
     st.write(df[df.duplicated(keep=False)])
+    with st.expander("Intention & How to fix"):
+        st.text(
+            """
+            1) Intention
+             - Check duplicated lines
+            2) How to fix
+             - Data cleaning: Remove duplicated lines or aggregate lines.
+            """
+        )
 
 else:
     st.text("Upload a file on the side bar")

@@ -9,6 +9,8 @@ st.text(
     It guides users through the general steps of EDA, explaining the core concepts behind each stage.
     The application aims to demystify the EDA process, making it accessible and understandable to those new to data analysis.
     It provides a structured approach to exploring datasets, enabling users to gain initial insights and identify potential patterns, anomalies and relationships within their data before moving on to complex analysis.  # noqa
+    This tool also provides the intention of data visulization/anlaysis and how to fix the issues with some examples,
+    Solutions could be different based on the data and the business context.
     If you have any further question/feedback or any bug, please feel free to reach out to the developer, digitalfolk55@gmai.com.
     """
 )
