@@ -25,6 +25,7 @@ def run():
     pages.run()
     uploaded_file = st.sidebar.file_uploader("Upload file", accept_multiple_files=False)
     st.sidebar.text("Warning! Don't upload any confidential data on this app.")
+    st.sidebar.text("Currently only accept a csv file.")
 
     if uploaded_file is not None and "df" not in st.session_state:
         df = pd.read_csv(uploaded_file)
