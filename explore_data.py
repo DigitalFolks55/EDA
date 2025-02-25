@@ -32,7 +32,6 @@ with st.expander("Concepts"):
         """
     )
 
-# target, cat/num
 if "df" in st.session_state:
     df = st.session_state.df
     cols = list(df.columns)

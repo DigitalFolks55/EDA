@@ -2,8 +2,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 import streamlit as st
-
-from scipy.stats import zscore, median_abs_deviation, iqr
+from scipy.stats import iqr, median_abs_deviation, zscore
+from statsmodels.stats.weightstats import ztest
 
 
 def dfprofiler(df) -> None:
@@ -185,3 +185,55 @@ def outlier_hampel(df, column, threshold) -> None:
     st.text("Outliers")
     st.write(df[df["outlier"] == "outlier"])
     st.session_state.df = df[input_cols]
+
+
+def hypo_ztest(df, col1, col2=None, hue=None, conf=95, tail="one-tailed") -> None:
+    """Z test for hypothesis testing."""
+    if df[col1].dtype in ["object", "category"]:
+        st.text(f"Please select a numerical column for the 1st column; {col1}.")
+    elif col2 is not None and df[col2].dtype in ["object", "category"]:
+        st.text(f"Please select a numerical column for the 2nd column; {col2}.")
+    elif hue is not None and len(df[hue].unique()) > 2:
+        st.text(
+            "Grouping column has groups more than 2 which we cannot proceed hypothesis test; Please select another column."
+        )
+    else:
+        if hue is not None:
+            group1 = df[df[hue] == df[hue].unique()[0]][col1]
+            group2 = df[df[hue] == df[hue].unique()[1]][col1]
+            z_stat, p_val = ztest(group1, group2)
+            st.text(
+                f"Null hypothesis: two groups by {hue} of {col1} have same means (averages)"
+            )
+        elif col2 is not None:
+            z_stat, p_val = ztest(df[col1], df[col2])
+            st.text(
+                f"Null hypothesis: two groups by {col2} of {col1} have same means (averages)"
+            )
+
+        st.text(f"Z score: {z_stat}")
+        st.text(f"P value: {p_val}")
+
+        threshold = 1 - (conf / 100)
+        if tail == "two-tailed":
+            threshold = threshold / 2
+
+        if p_val < threshold:
+            st.text("Reject null hypothesis")
+        else:
+            st.text("Accept null hypothesis")
+
+        f, ax = plt.subplots(1, 2, figsize=(12, 4))
+        if hue is not None:
+            sns.kdeplot(
+                df[df[hue] == df[hue].unique()[0]], x=col1, hue=hue, fill=True, ax=ax[0]
+            )
+            sns.kdeplot(
+                df[df[hue] == df[hue].unique()[1]], x=col1, hue=hue, fill=True, ax=ax[1]
+            )
+        elif col2 is not None:
+            sns.kdeplot(df, x=col1, fill=True, ax=ax[0])
+            sns.kdeplot(df, x=col2, fill=True, ax=ax[1])
+
+        plt.tight_layout()
+        st.pyplot(f)
