@@ -12,7 +12,7 @@ st.title("Explore Outliers")
 with st.expander("Concepts"):
     st.text(
         """
-        The main purpose of exploring outliter of given data.
+        The main purpose is to explore outliters from given data.
         Outliers negatively impact the statistical analysis and machine learning algorithms.
         Several mothologies are available to detect outliers as below.
 
@@ -60,7 +60,9 @@ if "df" in st.session_state:
                     """
                 )
                 st.text("*Reference")
-                st.link_button("Z score", "https://en.wikipedia.org/wiki/Standard_score")
+                st.link_button(
+                    "Z score", "https://en.wikipedia.org/wiki/Standard_score"
+                )
         elif method == "Interquartile range (IQR)":
             threshold = st.slider("Select a threshold", 0.0, 5.0, 1.5, 0.1)
             if column is not None:
@@ -75,7 +77,10 @@ if "df" in st.session_state:
                     """
                 )
                 st.text("*Reference")
-                st.link_button("Interquartile range", "https://en.wikipedia.org/wiki/Interquartile_range")
+                st.link_button(
+                    "Interquartile range",
+                    "https://en.wikipedia.org/wiki/Interquartile_range",
+                )
         elif method == "Hampel filter":
             threshold = st.slider("Select a threshold", 0.0, 5.0, 3.0, 0.1)
             if column is not None:
@@ -90,7 +95,10 @@ if "df" in st.session_state:
                     """
                 )
                 st.text("*Reference")
-                st.link_button("Hampel filter", "https://real-statistics.com/time-series-analysis/stochastic-processes/hampel-filter-outliers/")
+                st.link_button(
+                    "Hampel filter",
+                    "https://real-statistics.com/time-series-analysis/stochastic-processes/hampel-filter-outliers/",
+                )
         else:
             st.text("Not implemented yet")
 
