@@ -49,32 +49,32 @@ if "df" in st.session_state:
 
     if test == "Z-test":
         if column2 is not None and hue is not None:
-            st.text("Please either of 2nd column or Grouping column")
+            st.error("Please either of 2nd column or Grouping column")
         elif column1 is not None and hue is not None:
             hypo_ztest(df, col1=column1, col2=None, hue=hue, conf=conf, tail=tail)
         elif column1 is not None and column2 is not None:
             hypo_ztest(df, col1=column1, col2=column2, hue=None, conf=conf, tail=tail)
         else:
-            st.text("Please select columns")
+            st.error("Please select columns")
 
         with st.expander("Reference"):
             st.link_button("Z-test", "https://en.wikipedia.org/wiki/Z-test")
-    if test == "T-test":
+    elif test == "T-test":
         if column2 is not None and hue is not None:
-            st.text("Please either of 2nd column or Grouping column")
+            st.error("Please either of 2nd column or Grouping column")
         elif column1 is not None and hue is not None:
             hypo_ttest(df, col1=column1, col2=None, hue=hue, conf=conf, tail=tail)
         elif column1 is not None and column2 is not None:
             hypo_ttest(df, col1=column1, col2=column2, hue=None, conf=conf, tail=tail)
         else:
-            st.text("Please select columns")
+            st.error("Please select columns")
 
         with st.expander("Reference"):
             st.link_button("T-test", "https://en.wikipedia.org/wiki/Student%27s_t-test")
     else:
-        st.text("Not implemented yet")
+        st.error("Not implemented yet")
 
     dfprofiler(df)
 
 else:
-    st.text("Upload a file on the side bar")
+    st.error("Upload a file on the side bar")
