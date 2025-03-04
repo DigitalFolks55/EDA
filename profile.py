@@ -1,3 +1,4 @@
+import pandas as pd
 import streamlit as st
 
 # Description of app.
@@ -25,6 +26,45 @@ with st.expander("Concepts"):
 if "df" in st.session_state:
     df = st.session_state.df
     st.subheader("Dataset samples")
+    st.write(df.head())
+
+    st.subheader("Datatype")
+    data_types_df = df.dtypes.to_frame().reset_index()
+    data_types_df.columns = ["Column", "Data Type"]
+    data_types_df["New Data Type"] = data_types_df["Data Type"].apply(lambda x: str(x))
+    data_types_df = st.data_editor(
+        data_types_df,
+        column_config={
+            "New Data Type": st.column_config.SelectboxColumn(
+                help="Choose data type which you want to conver",
+                options=[
+                    "int64",
+                    "float64",
+                    "object",
+                    "category",
+                    "bool",
+                    "string",
+                    "datetime",
+                    "date",
+                ],
+                required=True,
+            )
+        },
+        disabled=["Column", "Data Type"],
+        hide_index=True,
+    )
+
+    for i, row in data_types_df.iterrows():
+        if row["Data Type"] != row["New Data Type"]:
+            if row["New Data Type"] == "datetime":
+                df[row["Column"]] = pd.to_datetime(df[row["Column"]], errors="coerce")
+            elif row["New Data Type"] == "date":
+                df[row["Column"]] = pd.to_datetime(
+                    df[row["Column"]], errors="coerce"
+                ).dt.date
+            else:
+                df[row["Column"]] = df[row["Column"]].astype(row["New Data Type"])
+    st.text("After changing data type")
     st.write(df.head())
 
     st.subheader("Statistical values of the data")
@@ -82,4 +122,4 @@ if "df" in st.session_state:
         )
 
 else:
-    st.text("Upload a file on the side bar")
+    st.error("Upload a file on the side bar")

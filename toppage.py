@@ -48,13 +48,11 @@ st.subheader("Warning! Don't upload any confidential data on this app.")
 # Version logs
 st.subheader("Version")
 hist = {
-    "Date": ["2025-02-16", "2025-02-20", "2025-02-21", "2025-02-25"],
+    "Version": ["0.0.0"],
+    "Date": ["2025-02-25"],
     "Description": [
-        "Crated an application; Added a page of Profile Data",
-        "Added a page of Explore Data",
-        "Added a page of Explore Outliers",
-        "Added a page of Test Hypothesis",
+        "Crated an application",
     ],
 }
 
-st.table(pd.DataFrame(hist))
+st.dataframe(pd.DataFrame(hist), hide_index=True)

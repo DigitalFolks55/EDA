@@ -1,8 +1,11 @@
+import datetime
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
 import streamlit as st
+from matplotlib.ticker import MaxNLocator
 from scipy.stats import iqr, median_abs_deviation, ttest_ind, zscore
 from statsmodels.stats.weightstats import ztest
 
@@ -28,7 +31,7 @@ def dist_plot(df, column) -> None:
             plt.tight_layout()
             st.pyplot(f)
     elif df[column].dtype in ["object", "category"]:
-        st.text(
+        st.error(
             "Selected column is a categorical column, please select a numerical column"
         )
     else:
@@ -60,7 +63,7 @@ def count_plot(df, column, hue) -> None:
             st.pyplot(f)
     else:
         if df[column].dtype not in ["object", "category"]:
-            st.text(
+            st.error(
                 "Selected column is a numerical column. Chart would be messy in case"
             )
         f, ax = plt.subplots(1, 2, figsize=(12, 4))
@@ -80,15 +83,25 @@ def count_plot(df, column, hue) -> None:
 
 def scatter_plot(df, x, y, hue) -> None:
     """Scatter plot"""
-    col1, col2 = st.columns([1, 1], vertical_alignment="center")
-    with col1:
-        f1 = sns.lmplot(data=df, x=x, y=y, hue=hue, fit_reg=True)
-        plt.tight_layout()
-        st.pyplot(f1)
-    with col2:
-        f2 = sns.jointplot(data=df, x=x, y=y, hue=hue)
-        plt.tight_layout()
-        st.pyplot(f2)
+    if (
+        df[x].dtype in ["datetime64[ns]"]
+        or isinstance(df[x].dtype, datetime.date)
+        or df[y].dtype in ["datetime64[ns]"]
+        or isinstance(df[y].dtype, datetime.date)
+    ):
+        st.error("Chosen datetime or date column. Please select other columns.")
+    else:
+        col1, col2 = st.columns([1, 1], vertical_alignment="center")
+        with col1:
+            f1 = plt.figure()
+            f1 = sns.lmplot(data=df, x=x, y=y, hue=hue, fit_reg=True)
+            plt.tight_layout()
+            st.pyplot(f1)
+        with col2:
+            f2 = plt.figure()
+            f2 = sns.jointplot(data=df, x=x, y=y, hue=hue)
+            plt.tight_layout()
+            st.pyplot(f2)
 
 
 def pair_plot(df, hue) -> None:
@@ -120,6 +133,30 @@ def corr_plot(df, threshold) -> None:
     )
     plt.tight_layout()
     st.pyplot(f)
+
+
+def line_plot(df, x, y, hue) -> None:
+    """Line plot"""
+    x_nunique = df[x].nunique()
+    col1, col2 = st.columns([1, 1], vertical_alignment="center")
+    with col1:
+        f1, ax1 = plt.subplots()
+        sns.lineplot(data=df, x=x, y=y, ax=ax1)
+        ax1.set_xlim(xmin=df[x].min(), xmax=df[x].max())
+        if x_nunique > 100:
+            ax1.xaxis.set_major_locator(MaxNLocator(nbins=10))
+        plt.xticks(rotation=90)
+        plt.tight_layout()
+        st.pyplot(f1)
+    with col2:
+        f2, ax2 = plt.subplots()
+        sns.lineplot(data=df, x=x, y=y, hue=hue, ax=ax2)
+        ax2.set_xlim(xmin=df[x].min(), xmax=df[x].max())
+        if x_nunique > 100:
+            ax2.xaxis.set_major_locator(MaxNLocator(nbins=10))
+        plt.xticks(rotation=90)
+        plt.tight_layout()
+        st.pyplot(f2)
 
 
 def outlier_zscore(df, column, threshold) -> None:
@@ -218,12 +255,17 @@ def hypo_kde_plot(df, col1, col2=None, hue=None) -> None:
 
 def hypo_ztest(df, col1, col2=None, hue=None, conf=95, tail="one-tailed") -> None:
     """Z test for hypothesis testing."""
-    if df[col1].dtype in ["object", "category"]:
-        st.text(f"Please select a numerical column for the 1st column; {col1}.")
-    elif col2 is not None and df[col2].dtype in ["object", "category"]:
-        st.text(f"Please select a numerical column for the 2nd column; {col2}.")
+    if df[col1].dtype in ["object", "category", "datetime64[ns]"] or isinstance(
+        df[col1].dtype, datetime.datetime
+    ):
+        st.error(f"Please select a numerical column for the 1st column; {col1}.")
+    elif col2 is not None and (
+        df[col2].dtype in ["object", "category", "datetime64[ns]"]
+        or isinstance(df[col2].dtype, datetime.datetime)
+    ):
+        st.error(f"Please select a numerical column for the 2nd column; {col2}.")
     elif hue is not None and len(df[hue].unique()) > 2:
-        st.text(
+        st.error(
             "Grouping column has groups more than 2 which we cannot proceed hypothesis test; Please select another column."
         )
     else:
@@ -256,11 +298,11 @@ def hypo_ztest(df, col1, col2=None, hue=None, conf=95, tail="one-tailed") -> Non
 def hypo_ttest(df, col1, col2=None, hue=None, conf=95, tail="one-tailed") -> None:
     """T test for hypothesis testing."""
     if df[col1].dtype in ["object", "category"]:
-        st.text(f"Please select a numerical column for the 1st column; {col1}.")
+        st.error(f"Please select a numerical column for the 1st column; {col1}.")
     elif col2 is not None and df[col2].dtype in ["object", "category"]:
-        st.text(f"Please select a numerical column for the 2nd column; {col2}.")
+        st.error(f"Please select a numerical column for the 2nd column; {col2}.")
     elif hue is not None and len(df[hue].unique()) > 2:
-        st.text(
+        st.error(
             "Grouping column has groups more than 2 which we cannot proceed hypothesis test; Please select another column."
         )
     else:

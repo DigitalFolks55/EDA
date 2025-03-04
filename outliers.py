@@ -36,13 +36,13 @@ if "df" in st.session_state:
     column = st.selectbox("Select a column", cols)
 
     if column is None:
-        st.text(
+        st.error(
             """
             Choose one of columns from dataset.
             """
         )
     elif df[column].dtype in ["object", "category"]:
-        st.text(
+        st.error(
             "Selected column is a categorical column, please select a numerical column"
         )
     else:
@@ -105,4 +105,4 @@ if "df" in st.session_state:
     dfprofiler(df)
 
 else:
-    st.text("Upload a file on the side bar")
+    st.error("Upload a file on the side bar")

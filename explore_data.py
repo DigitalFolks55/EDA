@@ -1,9 +1,9 @@
 import streamlit as st
 
 from modules.utils import (corr_plot, count_plot, dfprofiler, dist_plot,
-                           pair_plot, scatter_plot)
+                           line_plot, pair_plot, scatter_plot)
 
-visuals = ["Distribution", "Count", "Scatter", "Pair", "corr_plot"]
+visuals = ["Distribution", "Count", "Scatter", "Line", "Pair", "Correlation"]
 
 
 # Description of app.
@@ -76,7 +76,7 @@ if "df" in st.session_state:
         y_col = st.selectbox("Select a 2nd column", cols)
         hue = st.selectbox("Select grouping column", cols)
         if x_col == "All" or y_col == "All" or hue == "All":
-            st.text(
+            st.error(
                 """
                 All is not accepted for any column.
                 Choose one of columns from dataset.
@@ -97,10 +97,34 @@ if "df" in st.session_state:
                 )
         else:
             st.text("We need 2 columns. Please select 1st and 2nd columns")
+    elif visual == "Line":
+        x_col = st.selectbox("Select a 1st column", cols)
+        y_col = st.selectbox("Select a 2nd column", cols)
+        hue = st.selectbox("Select grouping column", cols)
+        if x_col == "All" or y_col == "All" or hue == "All":
+            st.error(
+                """
+                All is not accepted for any column.
+                Choose one of columns from dataset.
+                """
+            )
+        elif x_col is not None and y_col is not None:
+            line_plot(df, x_col, y_col, hue)
+        with st.expander("Intention & How to fix"):
+            st.text(
+                """
+                1) Intention
+                - This plot is for more insights on trends; i.e. time series.
+                - Review the relationship of values according to changes of subsequent column.
+                2) How to fix
+                - Certain surge of values vs. specific subsequent column, check data and review it with data expert.
+                - Gather more data to explain those surges.
+                """
+            )
     elif visual == "Pair":
         hue = st.selectbox("Select a grouping column", cols)
         if hue == "All":
-            st.text(
+            st.error(
                 """
                 All is not accepted for a grouping column.
                 Choose one of columns from dataset.
@@ -119,7 +143,7 @@ if "df" in st.session_state:
                     - Outliers: Remove or impute outliers (Please review it with experts).
                     """
                 )
-    elif visual == "corr_plot":
+    elif visual == "Correlation":
         threshold = st.slider("Select a threshold", 0.0, 1.0, 0.5, 0.1)
         corr_plot(df, threshold)
         with st.expander("Intention & How to fix"):
@@ -138,4 +162,4 @@ if "df" in st.session_state:
     dfprofiler(df)
 
 else:
-    st.text("Upload a file on the side bar")
+    st.error("Upload a file on the side bar")
