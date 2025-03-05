@@ -28,11 +28,12 @@ with st.expander("Concepts"):
         5) Visualization
 
         Data profiling on this tool.
-        1) Distribution plot (Categorical, Numerical data)
+        1) Distribution plot (Categorical & Numerical data)
         2) Pie/Count plot (Categorical data)
         3) Scatter plot (Numerical data)
-        4) Pair plot (Numerical data)
-        5) Correlation plot (Numerical)
+        4) Line plot (Categorical & Numerical data)
+        5) Pair plot (Numerical data)
+        6) Correlation plot (Numerical)
 
         * To be updated:
         More visularization & Word embedding, Geospatial data
