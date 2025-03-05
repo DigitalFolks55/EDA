@@ -1,7 +1,14 @@
 import streamlit as st
 
-from modules.utils import (corr_plot, count_plot, dfprofiler, dist_plot,
-                           line_plot, pair_plot, scatter_plot)
+from modules.utils import (
+    corr_plot,
+    count_plot,
+    dfprofiler,
+    dist_plot,
+    line_plot,
+    pair_plot,
+    scatter_plot,
+)
 
 visuals = ["Distribution", "Count", "Scatter", "Line", "Pair", "Correlation"]
 
@@ -28,7 +35,7 @@ with st.expander("Concepts"):
         5) Correlation plot (Numerical)
 
         * To be updated:
-        More visularization & Time Series, Geospatial data
+        More visularization & Word embedding, Geospatial data
         """
     )
 

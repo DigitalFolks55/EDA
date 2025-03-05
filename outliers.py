@@ -1,7 +1,6 @@
 import streamlit as st
 
-from modules.utils import (dfprofiler, outlier_hampel, outlier_iqr,
-                           outlier_zscore)
+from modules.utils import dfprofiler, outlier_hampel, outlier_iqr, outlier_zscore
 
 methods = ["Z score", "Interquartile range (IQR)", "Hampel filter"]
 
