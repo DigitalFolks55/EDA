@@ -16,5 +16,5 @@ https://edabeginner.streamlit.app/
 - Formatting: Black  
 - Linting: flake8  
 
-## To be updated  
-- Docker  
+## Docker
+- docker run -p 8501:8501 digitalfolks/eda
