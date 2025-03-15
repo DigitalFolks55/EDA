@@ -5,12 +5,21 @@ from modules.utils import (
     count_plot,
     dfprofiler,
     dist_plot,
+    geo_plot,
     line_plot,
     pair_plot,
     scatter_plot,
 )
 
-visuals = ["Distribution", "Count", "Scatter", "Line", "Pair", "Correlation"]
+visuals = [
+    "Distribution",
+    "Count",
+    "Scatter",
+    "Line",
+    "Pair",
+    "Correlation",
+    "Geospatial",
+]
 
 
 # Description of app.
@@ -33,10 +42,11 @@ with st.expander("Concepts"):
         3) Scatter plot (Numerical data)
         4) Line plot (Categorical & Numerical data)
         5) Pair plot (Numerical data)
-        6) Correlation plot (Numerical)
+        6) Correlation plot (Numerical data)
+        7) Geospatial plot (Geospatial data)
 
         * To be updated:
-        More visularization & Word embedding, Geospatial data
+        Word embedding
         """
     )
 
@@ -164,6 +174,11 @@ if "df" in st.session_state:
                 - Correlated columns: Drop one of them as per your needs.
                 """
             )
+    elif visual == "Geospatial":
+        latitude = st.selectbox("Select a column of latitude", cols)
+        longitude = st.selectbox("Select a column of longitude", cols)
+        type = st.selectbox("Select a plot type", ["Marker", "HeatMap"])
+        geo_plot(df, latitude, longitude, type)
     else:
         st.text("Not implemented yet")
 

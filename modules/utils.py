@@ -1,5 +1,7 @@
 import datetime
 
+import folium
+from folium.plugins import HeatMap, MarkerCluster
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -8,6 +10,7 @@ import streamlit as st
 from matplotlib.ticker import MaxNLocator
 from scipy.stats import iqr, median_abs_deviation, ttest_ind, zscore
 from statsmodels.stats.weightstats import ztest
+from streamlit_folium import st_folium
 
 
 def dfprofiler(df) -> None:
@@ -157,6 +160,49 @@ def line_plot(df, x, y, hue) -> None:
         plt.xticks(rotation=90)
         plt.tight_layout()
         st.pyplot(f2)
+
+
+def geo_plot(df, lat, lon, type) -> None:
+    """Geospatial plot"""
+    if lon == "All" or lat == "All":
+        st.error(
+            "All is not acceptable for this plot. Selected correct columns for longitude and Latitude"
+        )
+    elif lon is None or lat is None:
+        st.error("Select columns for longitude and latitude")
+    elif df[lat].dtype in ["object", "category"] or df[lon].dtype in [
+        "object",
+        "category",
+    ]:
+        st.error(
+            "Longitude & Latitude columns should be numerical columns. Check columns again"
+        )
+    else:
+        if len(df[(df[lat] < -90) | (df[lat] > 90)]) > 0:
+            st.error("Latitude is not in a range of -90~+90")
+        elif len(df[(df[lon] < -180) | (df[lon] > 180)]) > 0:
+            st.error("Longitude is not in a range of -180~+180")
+        else:
+            base_map = folium.Map(
+                location=[df[lat].mean(), df[lon].mean()],
+                control_scale=True,
+                zoom_start=10,
+            )
+
+            if type == "Marker":
+                marker_cluster = MarkerCluster().add_to(base_map)
+                for i in range(len(df)):
+                    # for i in range(100):
+                    folium.Marker(location=[df.iloc[i][lat], df.iloc[i][lon]]).add_to(
+                        marker_cluster
+                    )
+                st_folium(base_map, width=1000)
+            elif type == "HeatMap":
+                data_list = [[df.iloc[i][lat], df.iloc[i][lon]] for i in range(100)]
+                HeatMap(data_list).add_to(base_map)
+                st_folium(base_map, width=1000)
+            else:
+                st.error("Not implemented yet")
 
 
 def outlier_zscore(df, column, threshold) -> None:

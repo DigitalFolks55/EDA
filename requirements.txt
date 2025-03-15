@@ -13,6 +13,7 @@ cycler==0.12.1
 debugpy==1.8.12
 decorator==5.1.1
 executing==2.2.0
+folium==0.19.5
 fonttools==4.55.8
 gitdb==4.0.12
 GitPython==3.1.44
@@ -65,6 +66,7 @@ smmap==5.0.2
 stack-data==0.6.3
 statsmodels==0.14.4
 streamlit==1.42.0
+streamlit-folium==0.24.0
 tenacity==9.0.0
 toml==0.10.2
 tornado==6.4.2
